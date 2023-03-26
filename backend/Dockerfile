@@ -10,17 +10,17 @@ ENV DB_NAME $DB_NAME
 
 RUN pip install -r $CONTAINER_HOME/requirements.txt
 
-FROM node:18-alpine
+# FROM node:18-alpine
 
-WORKDIR $CONTAINER_HOME/my-app
+# WORKDIR $CONTAINER_HOME/my-app
 
-ENV PATH $CONTAINER_HOME/node_modules/.bin:$PATH
+# ENV PATH $CONTAINER_HOME/node_modules/.bin:$PATH
 
-ADD /my-app .
-RUN npm ci
+# ADD /my-app .
+# RUN npm ci
 
-RUN npm install react-scripts@5.0.1 -g --silent
+# RUN npm install react-scripts@5.0.1 -g --silent
 
-RUN npm run build
+# RUN npm run build
 
-WORKDIR $CONTAINER_HOME
+# WORKDIR $CONTAINER_HOME

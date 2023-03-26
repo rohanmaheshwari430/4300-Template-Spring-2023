@@ -22,7 +22,7 @@ mysql_engine = MySQLDatabaseHandler(
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
 mysql_engine.load_file_into_db()
 
-app = Flask(__name__, static_url_path='', static_folder='my-app/build')
+app = Flask(__name__)
 CORS(app)
 
 # Sample search, the LIKE operator in this case is hard-coded,
@@ -39,7 +39,7 @@ def sql_search(episode):
 
 @app.route("/")
 def home():
-    return send_from_directory(app.static_folder, 'index.html')
+    return render_template('base.html', title="sample html")
 
 
 @app.route("/episodes")
