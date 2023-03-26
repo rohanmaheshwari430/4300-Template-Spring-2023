@@ -2,6 +2,9 @@ env/*
 .DS_Store
 Docker/__pycache__
 
+node_modules
+build
+
 venv/
 
 *.pyc
