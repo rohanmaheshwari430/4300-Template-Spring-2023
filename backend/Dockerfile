@@ -9,5 +9,3 @@ ARG DB_NAME
 ENV DB_NAME $DB_NAME
 
 RUN pip install -r $CONTAINER_HOME/requirements.txt
-
-EXPOSE 5001
