@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
+import jaccard
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
@@ -46,4 +47,14 @@ def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
 
+def sql_song_search(episode):
+    listy= jaccard.get_song_lyrics(episode)
+    return listy
+    # return json.dumps([dict(zip(keys, i)) for i in listy])
+
+
+@app.route("/songs")
+def songs_search():
+    text = request.args.get("title")
+    return sql_song_search(text)
 app.run(debug=True)
