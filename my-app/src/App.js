@@ -10,7 +10,7 @@ function App() {
   function getData() {
     axios({
       method: "GET",
-      url: "http://backend:5001/profile",
+      url: "http://localhost/profile",
     })
       .then((response) => {
         const res = response.data;
