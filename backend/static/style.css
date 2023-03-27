@@ -1,97 +1,151 @@
-.full-body-container{
+.full-body-container {
     position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100%;
-    height:100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
     flex-direction: column;
 }
 
-#google-c{
-    color:#4285F4;
+#google-c {
+    color: #4285F4;
 }
 
-#google-s{
-    color:#DB4437;
+#google-s {
+    color: #DB4437;
 }
 
-#google-4{
-    color:	#F4B400;
+#google-4 {
+    color: #F4B400;
 }
 
-#google-3{
-    color:	#4285F4;
+#google-3 {
+    color: #4285F4;
 }
 
-#google-0-1{
-    color:	#0F9D58;
+#google-0-1 {
+    color: #0F9D58;
 }
 
-#google-0-2{
-    color:#DB4437;
+#google-0-2 {
+    color: #DB4437;
 }
 
-.google-colors{
+.google-colors {
     display: flex;
     align-items: center;
     font-size: 48px;
 }
 
-.google-colors h1{
+.google-colors h1 {
     margin-bottom: 0;
     margin-right: 3px;
 }
 
-.subtitle{
+.subtitle {
     display: flex;
     align-items: center;
     font-size: 20px;
 }
 
-.input-box{
+.input-box {
     border-radius: 10px;
-    border:1px solid black;
+    border: 1px solid black;
+    margin-top: 80px;
+    padding: 8px;
+    width: 600px;
+    height: 70px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.input-box .input-label {
+    font-size: 12px;
+    padding-left: 48px;
+}
+
+.input-box .search-line {
     display: flex;
     align-items: center;
-    margin-top: 10px;
-    padding:12px;
-    width: 600px;
+    gap: 28px;
+    font-size: 18px;
 }
 
-.input-box img{
+.input-box img {
     height: 20px;
-    width:20px;
+    width: 20px;
 }
 
-.top-text{
+.top-text {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 10%;
 }
 
-.input-box input{
+.input-box input {
     width: 100%;
-    margin-left: 10px;
-    font-size: 16px;
     border: none;
     outline: 0;
 }
 
-#answer-box{
+#answer-box {
     width: 700px;
-    margin-top:50px; 
+    margin-top: 50px;
 }
 
-.episode-title{
+/* 
+.episode-title {
     font-family: 'Kanit', sans-serif;
 }
 
-.episode-desc{
+.episode-desc {
     font-family: 'Montserrat', sans-serif;
+} */
+
+.submit-button {
+    width: 180px;
+    height: 60px;
+
+    background: #111826;
+    mix-blend-mode: normal;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: bold;
+    font-family: Raleway;
+}
+
+.mainpage-header {
+    font-weight: bold;
+    color: black;
+    font-size: 80px;
+    font-weight: bold;
+    display: flex;
+    gap: 16px;
+}
+
+.mainpage-header span {
+    opacity: 80%;
+}
+
+.mainpage-header img {
+    height: 120px;
+    width: 120px;
+}
+
+html,
+body {
+    font-family: Poppins;
+}
+
+.search-icon {
+    filter: invert() brightness(0.8);
 }
