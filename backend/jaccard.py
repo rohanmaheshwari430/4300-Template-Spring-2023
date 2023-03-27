@@ -34,9 +34,11 @@ def find_sim(lyrics:set,titleorig):
 
 def get_song_lyrics(song_name):
   API.title = song_name
-  API.getLyrics(save=False)
-  title=API.title
-  return find_sim(_process_lyrics(API.lyrics),title)
+  lyrics = API.getLyrics(save=False)
+  title= API.title
+  print(title)
+  print(lyrics)
+  return find_sim(_process_lyrics(lyrics),title)
 
 def _process_lyrics( lyrics: str):
         # Convert lyrics to lowercase and tokenize
@@ -45,6 +47,4 @@ def _process_lyrics( lyrics: str):
         unique_tokens = set(tokens)
         return unique_tokens
 
-
-get_song_lyrics('Bad Blod')
 
