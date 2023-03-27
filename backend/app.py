@@ -47,15 +47,19 @@ def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
 
-def sql_song_search(episode):
+def jaccard_search(episode):
     listy= jaccard.get_song_lyrics(episode)
     return listy
-    # return json.dumps([dict(zip(keys, i)) for i in listy])
 
 
 @app.route("/songs")
 def songs_search():
     text = request.args.get("title")
-    return sql_song_search(text)
+    response = jaccard_search(text)
+    if response == None:
+        print('invalid song')
+        return []
+    else: 
+        return response
 
-##app.run(debug=True)
+app.run(debug=True)
