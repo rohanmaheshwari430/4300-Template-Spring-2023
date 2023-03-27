@@ -3,31 +3,35 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
-  rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
+  rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins:400,700,900" />
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway:400,700,900" />
+
 <body>
   <div class="full-body-container">
     <div class="top-text">
-      <div class="google-colors" style="font-weight: bold; color: black">Songmilarity</div>
+      <div class="google-colors mainpage-header">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" />
+        <span>Songmilarity</span>
+      </div>
       <div class="subtitle mb-1 " style="color: black">Discover similar songs!</div>
       <div class="input-box" onclick="sendFocus()">
-        <img src="{{ url_for('static', filename='images/mag.png') }}" />
-        <input
-          placeholder="Search for songs with similar lyrics"
-          id="filter-text-val"
-        />
-        <button onclick="filterText()">Submit</button>
+        <div class="input-label">Song Name/Lyrics</div>
+        <div class="search-line">
+          <img class="search-icon" src="{{ url_for('static', filename='images/mag.png') }}" />
+          <input placeholder='"One Dance"' id="filter-text-val" />
+        </div>
       </div>
+      <button class="submit-button" onclick="filterText()">SEARCH</button>
     </div>
     <div id="answer-box">
-     
-  </div>
 
-  <script>
-    function answerBoxTemplate(title, score) {
-      return ` <div
+    </div>
+
+    <script>
+      function answerBoxTemplate(title, score) {
+        return ` <div
         class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
       >
         <h3
@@ -38,9 +42,9 @@
         <p class="font-normal text-gray-700 dark:text-gray-400"> Similarity rating: ${score}</p>
       </div>
     </div>`;
-    }
-    function invalidSongTemplate() {
-      return ` <div
+      }
+      function invalidSongTemplate() {
+        return ` <div
         class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
       >
         <h3
@@ -50,38 +54,38 @@
         </h3>
       </div>
     </div>`;
-    }
+      }
 
-    function sendFocus() {
-      document.getElementById("filter-text-val").focus();
-    }
+      function sendFocus() {
+        document.getElementById("filter-text-val").focus();
+      }
 
-    function filterText() {
-      document.getElementById("answer-box").innerHTML = "";
-      console.log(document.getElementById("filter-text-val").value);
-      fetch(
-        "/songs?" +
+      function filterText() {
+        document.getElementById("answer-box").innerHTML = "";
+        console.log(document.getElementById("filter-text-val").value);
+        fetch(
+          "/songs?" +
           new URLSearchParams({
             title: document.getElementById("filter-text-val").value,
           }).toString()
-      )
-        .then((response) => response.json())
-        .then((data) =>  {
-          if(data.length == 0) {
-            let tempDiv = document.createElement("div");
-            tempDiv.innerHTML = invalidSongTemplate();
-            document.getElementById("answer-box").appendChild(tempDiv);
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.length == 0) {
+              let tempDiv = document.createElement("div");
+              tempDiv.innerHTML = invalidSongTemplate();
+              document.getElementById("answer-box").appendChild(tempDiv);
+            }
+            else {
+              data.forEach((row) => {
+                let tempDiv = document.createElement("div");
+                tempDiv.innerHTML = answerBoxTemplate(row.title, row.score);
+                document.getElementById("answer-box").appendChild(tempDiv);
+              })
+            }
           }
-          else {
-            data.forEach((row) => {
-            let tempDiv = document.createElement("div");
-            tempDiv.innerHTML = answerBoxTemplate(row.title, row.score);
-            document.getElementById("answer-box").appendChild(tempDiv);
-          })
-          }
-        }
-        );
-    }
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+          );
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
