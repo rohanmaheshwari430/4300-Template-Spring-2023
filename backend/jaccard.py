@@ -6,9 +6,7 @@ from typing import List
 API = azapi.AZlyrics('google', accuracy=0.5)
 
 def find_sim(query_song_lyrics, query_song_name):
-  f = open('data.json')
-# returns JSON object as 
-# a dictionary
+  f = open('data.json') # returns JSON object as a dictionary
   data = json.load(f)
   scores = []
   for song in data["songs"]:
@@ -33,11 +31,6 @@ def find_sim(query_song_lyrics, query_song_name):
 
 
 def get_song_lyrics(song_name):
-  # API.title = song_name
-  # lyrics = API.getLyrics(save=False)
-  # title= API.title
-  # print(title)
-  # print(lyrics)
   f = open('data.json')
   data = json.load(f)
   song_titles = [song['title'].lower() for song in data["songs"]]
