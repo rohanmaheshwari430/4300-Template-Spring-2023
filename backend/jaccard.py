@@ -40,11 +40,12 @@ def get_song_lyrics(song_name):
   # print(lyrics)
   f = open('data.json')
   data = json.load(f)
-  song_titles = [song['title'] for song in data["songs"]]
-  if song_name in song_titles:
-    song_index = song_titles.index(song_name)
+  song_titles = [song['title'].lower() for song in data["songs"]]
+  lowercased_song_name = song_name.lower()
+  if lowercased_song_name in song_titles:
+    song_index = song_titles.index(lowercased_song_name)
     lyrics = data['songs'][song_index]['lyrics']
-    return find_sim(lyrics, song_name)
+    return find_sim(lyrics, data['songs'][song_index]['title'])
 
 def _process_lyrics(lyrics: str):
         # Convert lyrics to lowercase and tokenize
