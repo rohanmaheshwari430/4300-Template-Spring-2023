@@ -22,3 +22,5 @@ build/
 helpers/*
 
 exploration/*.csv
+
+exploration/lastfm_key
