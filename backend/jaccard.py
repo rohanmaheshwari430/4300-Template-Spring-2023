@@ -1,9 +1,7 @@
 import json
-import azapi 
 from typing import List
 
 
-API = azapi.AZlyrics('google', accuracy=0.5)
 
 def find_sim(query_song_lyrics, query_song_name):
   f = open('data.json') # returns JSON object as a dictionary
