@@ -66,6 +66,19 @@
     gap: 3px;
 }
 
+.search-section {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.image-checkbox {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+}
+
+
 .input-box .input-label {
     font-size: 12px;
     padding-left: 48px;
@@ -97,8 +110,19 @@
 }
 
 #answer-box {
-    width: 700px;
+    width: 100%;
+    padding: 0 200px;
     margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+#answer-box>div {
+    flex-basis: 500px;
+    flex-shrink: 1;
 }
 
 /* 

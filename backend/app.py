@@ -47,15 +47,17 @@ def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
 
-def jaccard_search(episode):
-    listy= jaccard.get_song_lyrics(episode)
+def jaccard_search(episode, use_images):
+    listy= jaccard.get_song_lyrics(episode, use_images)
     return listy
 
 
 @app.route("/songs")
 def songs_search():
     text = request.args.get("title")
-    response = jaccard_search(text)
+    images = request.args.get("images") == "true"
+    print(text, images)
+    response = jaccard_search(text, use_images=images)
     if response == None:
         print('invalid song')
         return []

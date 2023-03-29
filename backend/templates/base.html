@@ -16,11 +16,17 @@
         <span>Songmilarity</span>
       </div>
       <div class="subtitle mb-1 " style="color: black">Discover similar songs!</div>
-      <div class="input-box" onclick="sendFocus()">
-        <div class="input-label">Song Name/Lyrics</div>
-        <div class="search-line">
-          <img class="search-icon" src="{{ url_for('static', filename='images/mag.png') }}" />
-          <input placeholder='"One Dance"' id="filter-text-val" />
+      <div class="search-section">
+        <div class="input-box" onclick="sendFocus()">
+          <div class="input-label">Song Name</div>
+          <div class="search-line">
+            <img class="search-icon" src="{{ url_for('static', filename='images/mag.png') }}" />
+            <input placeholder='"One Dance"' id="filter-text-val" />
+          </div>
+        </div>
+        <div class="search-checkbox image-checkbox">
+          <label for="images">Alt. DB.</label>
+          <input type="checkbox" id="images" name="images">
         </div>
       </div>
       <button class="submit-button" onclick="filterText()">SEARCH</button>
@@ -30,7 +36,7 @@
     </div>
 
     <script>
-      function answerBoxTemplate(title, score) {
+      const answerBoxTemplate = (title, score) => {
         return ` <div
         class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
       >
@@ -40,6 +46,22 @@
           ${title}
         </h3>
         <p class="font-normal text-gray-700 dark:text-gray-400"> Similarity rating: ${score}</p>
+      </div>
+    </div>`;
+      }
+
+      function answerBoxImagedTemplate({ title, genres, artist, image }) {
+        return ` <div
+        class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
+      >
+      <img class="rounded-lg w-full mb-4" src=${image} />
+        <h3
+          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          ${title}
+        </h3>
+        <p class="font-normal text-gray-900 dark:text-white">${artist}</p>
+        <p class="font-normal text-gray-700 dark:text-gray-400"> genres: ${genres.join(", ")}</p>
       </div>
     </div>`;
       }
@@ -63,10 +85,12 @@
       function filterText() {
         document.getElementById("answer-box").innerHTML = "";
         console.log(document.getElementById("filter-text-val").value);
+        const useImages = document.querySelector('#images').checked;
         fetch(
           "/songs?" +
           new URLSearchParams({
             title: document.getElementById("filter-text-val").value,
+            images: useImages
           }).toString()
         )
           .then((response) => response.json())
@@ -78,9 +102,16 @@
             }
             else {
               data.forEach((row) => {
+                console.log(row)
                 let tempDiv = document.createElement("div");
-                tempDiv.innerHTML = answerBoxTemplate(row.title, row.score);
-                document.getElementById("answer-box").appendChild(tempDiv);
+                if (!useImages) {
+                  tempDiv.innerHTML = answerBoxTemplate(row.title, row.score);
+                  document.getElementById("answer-box").appendChild(tempDiv);
+                }
+                else {
+                  tempDiv.innerHTML = answerBoxImagedTemplate(row);
+                  document.getElementById("answer-box").appendChild(tempDiv);
+                }
               })
             }
           }
