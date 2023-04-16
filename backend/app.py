@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
-import jaccard
+import similarity
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
@@ -47,9 +47,9 @@ def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
 
-def jaccard_search(episode, use_images):
-    listy = jaccard.get_song_lyrics(episode, use_images)
-    return listy
+def search(song, use_images):
+    similar_songs = similarity.get_similar_songs(song, use_images)
+    return similar_songs
 
 
 @app.route("/songs")
@@ -57,7 +57,7 @@ def songs_search():
     text = request.args.get("title")
     images = request.args.get("images") == "true"
     print(text, images)
-    response = jaccard_search(text, use_images=images)
+    response = search(text, use_images=images)
     if response == None:
         print('invalid song')
         return []

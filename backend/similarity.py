@@ -25,7 +25,7 @@ def get_cossim(i,j):
   if i >= 3500 and i <= 5250:
      return cossim_matrix_3[i - 3500][j]
 
-def find_sim(query_song_lyrics, query_song_name, title_to_index, use_images):
+def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_images):
   f = open('backend/data.json') if not use_images else open('backend/data-images.json')# returns JSON object as a dictionary
   data = json.load(f)
   scores = []
@@ -55,14 +55,16 @@ def find_sim(query_song_lyrics, query_song_name, title_to_index, use_images):
   print(final_list)
   return final_list
 
-def get_song_lyrics(query_song_name, use_images):
+def get_similar_songs(query_song_name, use_images):
   f = open('backend/data.json') if not use_images else open('backend/data-images.json')# returns JSON object as a dictionary
   data = json.load(f)
   title_to_index = {song['title']: i for i, song in enumerate(data['songs'])}
+  
   # lowercase title matching 
+  #TODO: Jason implements edit distance for finding closest song title to user query
   song_titles = [song['title'].lower() for song in data["songs"]]
   lowercased_query_song_name = query_song_name.lower()
   if lowercased_query_song_name in song_titles:
     song_index = song_titles.index(lowercased_query_song_name)
     query_song_lyrics = data['songs'][song_index]['lyrics']
-    return find_sim(query_song_lyrics, data['songs'][song_index]['title'], title_to_index, use_images=None) # passing corrected title (case sensitive) 
+    return find_similar_songs(query_song_lyrics, data['songs'][song_index]['title'], title_to_index, use_images=None) # passing corrected title (case sensitive) 
