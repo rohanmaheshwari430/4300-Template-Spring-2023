@@ -48,7 +48,7 @@ def episodes_search():
     return sql_search(text)
 
 def jaccard_search(episode, use_images):
-    listy= jaccard.get_song_lyrics(episode, use_images)
+    listy = jaccard.get_song_lyrics(episode, use_images)
     return listy
 
 
@@ -64,4 +64,4 @@ def songs_search():
     else: 
         return response
 
-# app.run(debug=True)
+app.run(debug=True)
