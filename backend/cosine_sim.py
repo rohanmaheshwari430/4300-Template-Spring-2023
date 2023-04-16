@@ -39,9 +39,11 @@ def get_sim(song1, song2, input_doc_mat):
     denominator = np.sqrt(np.dot(s1_vector, s1_vector)) * np.sqrt(np.dot(s2_vector, s2_vector))
     
     # Calculate the cosine similarity
-    cossim = numerator / denominator
-    print(song1, song2, cossim)
-    return cossim
+    try:
+      cossim = float(numerator) / float(denominator)
+      return cossim
+    except:
+       return 0
 
 def top_terms(songs, input_doc_mat, index_to_vocab, title_to_index, top_k=10):
     song_indices = [title_to_index[song] for song in songs]
@@ -60,14 +62,38 @@ def build_song_sims_cos(title_to_index, input_get_sim_method):
   song_sims = np.zeros((n_songs, n_songs))
   doc_mat = build_doc_by_vocab()
 
-  for i in range(n_songs):
+  sim_mat_1 = np.zeros((1750, n_songs))
+  sim_mat_2 = np.zeros((1750, n_songs))
+  sim_mat_3 = np.zeros((1750, n_songs))
+
+  # for i in range(n_songs):
+  #   for j in range(n_songs):
+  #     song_sims[i][j] = input_get_sim_method(data['songs'][i]['title'], data['songs'][j]['title'], doc_mat)
+  # return song_sims
+
+  for i in range(0, 1750):
     for j in range(n_songs):
-      song_sims[i][j] = input_get_sim_method(data['songs'][i]['title'], data['songs'][j]['title'], doc_mat)
+      sim_mat_1[i][j] = input_get_sim_method(data['songs'][i]['title'], data['songs'][j]['title'], doc_mat)
+  np.save('backend/cossim_matrix_1.npy', sim_mat_1)
+  print('built and saved cossim matrix 1 to file')
 
-  np.save('cossim_matrix.npy', song_sims)
-  print('built and saved cossim matrix to file')
-  return song_sims
+  for i in range(0, 1750):
+    for j in range(n_songs):
+      sim_mat_2[i][j] = input_get_sim_method(data['songs'][i + 1750]['title'], data['songs'][j]['title'], doc_mat)
+  np.save('backend/cossim_matrix_2.npy', sim_mat_2)
+  print('built and saved cossim matrix 2 to file')
+
+  for i in range(0, 1750):
+    for j in range(n_songs):
+      sim_mat_3[i][j] = input_get_sim_method(data['songs'][i + 3500]['title'], data['songs'][j]['title'], doc_mat)
+  np.save('backend/cossim_matrix_3.npy', sim_mat_3)
+  print('built and saved cossim matrix 3 to file')
 
 
-song_sims_cos = build_song_sims_cos(title_to_index, get_sim)
+
+build_song_sims_cos(title_to_index, get_sim)
+
+#0 1750
+#1751 3500
+#3501 5251
 
