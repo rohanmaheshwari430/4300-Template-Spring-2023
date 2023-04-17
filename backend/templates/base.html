@@ -30,7 +30,7 @@
           <input type="checkbox" id="images" name="images">
         </div>
       </div>
-      <button class="submit-button" onclick="filterText()">SEARCH</button>
+      <button class="submit-button" id="submit" onclick="filterText()">SEARCH</button>
     </div>
     <div id="answer-box">
 
@@ -87,6 +87,14 @@
     </div>`;
       }
 
+      var input = document.getElementById("filter-text-val");
+      input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          document.getElementById("submit").click();
+        }
+      });
+
       function sendFocus() {
         document.getElementById("filter-text-val").focus();
       }
@@ -104,6 +112,8 @@
         )
           .then((response) => response.json())
           .then((data) => {
+            autocorrection = data['autocorrected']
+            data = data['data']
             if (data.length == 0) {
               let tempDiv = document.createElement("div");
               tempDiv.innerHTML = invalidSongTemplate();
@@ -113,12 +123,13 @@
               data.forEach((row) => {
                 console.log(row)
                 let tempDiv = document.createElement("div");
+                // tempDiv.innerHTML += 
                 if (!useImages) {
-                  tempDiv.innerHTML = answerBoxTemplate(row.title, row.artist, row.score);
+                  tempDiv.innerHTML += answerBoxTemplate(row.title, row.artist, row.score);
                   document.getElementById("answer-box").appendChild(tempDiv);
                 }
                 else {
-                  tempDiv.innerHTML = answerBoxImagedTemplate(row);
+                  tempDiv.innerHTML += answerBoxImagedTemplate(row);
                   document.getElementById("answer-box").appendChild(tempDiv);
                 }
               })

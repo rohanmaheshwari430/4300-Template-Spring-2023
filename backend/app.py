@@ -1,6 +1,6 @@
 import json
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 import similarity
@@ -59,9 +59,11 @@ def songs_search():
     print(text, images)
     response = search(text, use_images=images)
     if response == None:
-        print('invalid song')
-        return json.dumps([])
+        autocorrected=similarity.autocorrect(text, images)
+        print(f'autocorrecting name from "{text}" to "{autocorrected}"')
+        resp = search(autocorrected, use_images=images)
+        return jsonify({'data': resp, 'autocorrected': autocorrected})
     else: 
-        return json.dumps(response)
+        return jsonify({'data': response, 'autocorrected': text})
 
 app.run(debug=True)

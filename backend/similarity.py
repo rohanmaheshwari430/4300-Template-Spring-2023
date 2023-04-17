@@ -14,7 +14,7 @@ def generalized_jaccard_similarity(s1, s2):
        return 0
     numerator = sum([min(s1[w] / s1_tokens, s2[w] / s2_tokens) for w in good_types])
     denominator = sum([max(s1[w] / s1_tokens, s2[w] / s2_tokens) for w in good_types])
-    print(numerator / denominator)
+    # print(numerator / denominator)
     return numerator / denominator
 
 def get_cossim(i,j):
@@ -28,6 +28,7 @@ def get_cossim(i,j):
 def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_images):
   f = open('backend/data.json') if not use_images else open('backend/data-images.json')# returns JSON object as a dictionary
   data = json.load(f)
+  f.close()
   scores = []
   for song in data["songs"]:
         if song["title"] != query_song_name:
@@ -52,7 +53,7 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
         score = round(score * 10, 1)
         final_list.append(({'title': title , 'artist': artist, 'score': str(score) + '/10'}))
         i += 1
-  print(final_list)
+  # print(final_list)
   return final_list
 
 def get_similar_songs(query_song_name, use_images):
@@ -68,3 +69,54 @@ def get_similar_songs(query_song_name, use_images):
     song_index = song_titles.index(lowercased_query_song_name)
     query_song_lyrics = data['songs'][song_index]['lyrics']
     return find_similar_songs(query_song_lyrics, data['songs'][song_index]['title'], title_to_index, use_images=None) # passing corrected title (case sensitive) 
+
+def autocorrect(query, use_images):
+  f = open('backend/data.json') if not use_images else open('backend/data-images.json')# returns JSON object as a dictionary
+  data = json.load(f)
+  f.close()
+  songs = [k['title'].lower() for k in data['songs']]
+  r = edit_distance_search(query, songs)
+  print("best results are ", r[:5])
+  return r[0][1]
+
+adj_chars = [('a', 'q'), ('a', 's'), ('a', 'z'), ('b', 'g'), ('b', 'm'), ('b', 'n'), ('b', 'v'), ('c', 'd'),
+             ('c', 'v'), ('c', 'x'), ('d', 'c'), ('d', 'e'), ('d', 'f'), ('d', 's'), ('e', 'd'), ('e', 'r'),
+             ('e', 'w'), ('f', 'd'), ('f', 'g'), ('f', 'r'), ('f', 'v'), ('g', 'b'), ('g', 'f'), ('g', 'h'),
+             ('g', 't'), ('h', 'g'), ('h', 'j'), ('h', 'm'), ('h', 'n'), ('h', 'y'), ('i', 'k'), ('i', 'o'),
+             ('i', 'u'), ('j', 'h'), ('j', 'k'), ('j', 'u'), ('k', 'i'), ('k', 'j'), ('k', 'l'), ('l', 'k'),
+             ('l', 'o'), ('m', 'b'), ('m', 'h'), ('n', 'b'), ('n', 'h'), ('o', 'i'), ('o', 'l'), ('o', 'p'),
+             ('p', 'o'), ('q', 'a'), ('q', 'w'), ('r', 'e'), ('r', 'f'), ('r', 't'), ('s', 'a'), ('s', 'd'),
+             ('s', 'w'), ('s', 'x'), ('t', 'g'), ('t', 'r'), ('t', 'y'), ('u', 'i'), ('u', 'j'), ('u', 'y'), 
+             ('v', 'b'), ('v', 'c'), ('v', 'f'), ('w', 'e'), ('w', 'q'), ('w', 's'), ('x', 'c'), ('x', 's'), 
+             ('x', 'z'), ('y', 'h'), ('y', 't'), ('y', 'u'), ('z', 'a'), ('z', 'x')]
+
+def substitution_cost(query, message, i, j):
+    if query[i-1] == message[j-1]:
+        return 0
+    else:
+        return 1.5 if (query[i - 1], message[j - 1]) in adj_chars else 2
+
+def edit_matrix(query, message):
+    
+    m = len(query) + 1
+    n = len(message) + 1
+
+    chart = {(0, 0): 0}
+    for i in range(1, m): 
+        chart[i,0] = chart[i-1, 0] + 1
+    for j in range(1, n): 
+        chart[0,j] = chart[0, j-1] + 1
+    for i in range(1, m):
+        for j in range(1, n):
+            chart[i, j] = min(
+                chart[i-1, j] + 1,
+                chart[i, j-1] + 1,
+                chart[i-1, j-1] + substitution_cost(query, message, i, j)
+            )
+    return chart
+
+def edit_distance(query, message):
+    return edit_matrix(query, message)[len(query), len(message)]
+
+def edit_distance_search(query, msgs):
+    return sorted([(edit_distance(query, msg),msg) for msg in msgs], key=lambda t: t[0])
