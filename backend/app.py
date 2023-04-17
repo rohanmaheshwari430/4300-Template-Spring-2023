@@ -60,8 +60,8 @@ def songs_search():
     response = search(text, use_images=images)
     if response == None:
         print('invalid song')
-        return []
+        return json.dumps([])
     else: 
-        return response
+        return json.dumps(response)
 
 app.run(debug=True)
