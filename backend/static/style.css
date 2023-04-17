@@ -111,13 +111,10 @@
 
 #answer-box {
     width: 100%;
-    padding: 0 200px;
     margin-top: 50px;
-    display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 50px;
-    flex-wrap: wrap;
 }
 
 #answer-box>div {
