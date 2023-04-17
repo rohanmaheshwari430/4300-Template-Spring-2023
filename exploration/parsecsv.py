@@ -57,7 +57,7 @@ with open(csv_file_path, 'r', newline='', encoding='utf-8') as csv_file:
             "album": song.album,
             "length:": song.length
         }
-        if ("remix" not in song.title.lower()) and ("dub" not in song.title.lower()):
+        if ("remix" not in song.title.lower()) and ("dub" not in song.title.lower()) and ("(" not in song.title.lower()) and (")" not in song.title.lower()):
           songs.append(person_json)
           print(person_json)
     data["songs"] = songs
