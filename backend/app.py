@@ -59,7 +59,7 @@ def songs_search():
     print(text, images)
     response = search(text, use_images=images)
     if response == None:
-        autocorrected=similarity.autocorrect(text, images)
+        autocorrected = similarity.autocorrect(text, images)
         print(f'autocorrecting name from "{text}" to "{autocorrected}"')
         resp = search(autocorrected, use_images=images)
         return jsonify({'data': resp, 'autocorrected': autocorrected})

@@ -59,17 +59,11 @@ def top_terms(songs, input_doc_mat, index_to_vocab, title_to_index, top_k=10):
 
 def build_song_sims_cos(title_to_index, input_get_sim_method):
   n_songs = len(data['songs'])
-  song_sims = np.zeros((n_songs, n_songs))
   doc_mat = build_doc_by_vocab()
 
   sim_mat_1 = np.zeros((1750, n_songs))
   sim_mat_2 = np.zeros((1750, n_songs))
   sim_mat_3 = np.zeros((1750, n_songs))
-
-  # for i in range(n_songs):
-  #   for j in range(n_songs):
-  #     song_sims[i][j] = input_get_sim_method(data['songs'][i]['title'], data['songs'][j]['title'], doc_mat)
-  # return song_sims
 
   for i in range(0, 1750):
     for j in range(n_songs):
@@ -91,9 +85,5 @@ def build_song_sims_cos(title_to_index, input_get_sim_method):
 
 
 
-build_song_sims_cos(title_to_index, get_sim)
-
-#0 1750
-#1751 3500
-#3501 5251
+# build_song_sims_cos(title_to_index, get_sim)
 

@@ -53,7 +53,6 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
         score = round(score * 10, 1)
         final_list.append(({'title': title , 'artist': artist, 'score': str(score) + '/10'}))
         i += 1
-  # print(final_list)
   return final_list
 
 def get_similar_songs(query_song_name, use_images):
