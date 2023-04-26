@@ -3,9 +3,14 @@ import numpy as np
 from typing import List
 import os
 
-cossim_matrix_1 = np.load('cossim_matrix_1.npy')
-cossim_matrix_2 = np.load('cossim_matrix_2.npy')
-cossim_matrix_3 = np.load('cossim_matrix_3.npy')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+file_path_1 = os.path.join(script_dir, 'cossim_matrix_1.npy')
+file_path_2 = os.path.join(script_dir, 'cossim_matrix_2.npy')
+file_path_3 = os.path.join(script_dir, 'cossim_matrix_3.npy')
+
+cossim_matrix_1 = np.load(file_path_1)
+cossim_matrix_2 = np.load(file_path_2)
+cossim_matrix_3 = np.load(file_path_3)
 
 def generalized_jaccard_similarity(s1, s2):
     s1_tokens = sum([s1[w] for w in s1.keys()])

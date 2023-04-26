@@ -66,4 +66,4 @@ def songs_search():
     else: 
         return jsonify({'data': response, 'autocorrected': text})
 
-# app.run(debug=True)
+app.run(debug=True)
