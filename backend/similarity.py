@@ -1,10 +1,16 @@
 import json
 import numpy as np
 from typing import List
+import os
 
-cossim_matrix_1 = np.load('backend/cossim_matrix_1.npy')
-cossim_matrix_2 = np.load('backend/cossim_matrix_2.npy')
-cossim_matrix_3 = np.load('backend/cossim_matrix_3.npy')
+dir_name = 'backend'
+relative_path_1 = os.path.join(dir_name, 'cossim_matrix_1.npy')
+relative_path_2 = os.path.join(dir_name, 'cossim_matrix_2.npy')
+relative_path_3 = os.path.join(dir_name, 'cossim_matrix_3.npy')
+
+cossim_matrix_1 = np.load(relative_path_1)
+cossim_matrix_2 = np.load(relative_path_2)
+cossim_matrix_3 = np.load(relative_path_3)
 
 def generalized_jaccard_similarity(s1, s2):
     s1_tokens = sum([s1[w] for w in s1.keys()])
