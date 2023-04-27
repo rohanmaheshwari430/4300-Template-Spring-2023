@@ -7,7 +7,6 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 file_path_1 = os.path.join(script_dir, 'cossim_matrix_1.npy')
 file_path_2 = os.path.join(script_dir, 'cossim_matrix_2.npy')
 file_path_3 = os.path.join(script_dir, 'cossim_matrix_3.npy')
-
 cossim_matrix_1 = np.load(file_path_1)
 cossim_matrix_2 = np.load(file_path_2)
 cossim_matrix_3 = np.load(file_path_3)
@@ -39,8 +38,11 @@ def get_cossim(i, j):
 def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_images):
     # returns JSON object as a dictionary
     f = open(
-        'backend/data.json') if not use_images else open('backend/data-images.json')
-    l = open('backend/data_cosine.json')
+       os.path.join(script_dir, 'data.json')
+) if not use_images else open(os.path.join(script_dir, 'data-images.json')
+)
+    l = open(os.path.join(script_dir, 'data_cosine.json')
+)
     data = json.load(f)
     lyric_data = json.load(l)
     f.close()
@@ -85,12 +87,13 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
 def get_similar_songs(query_song_name, use_images):
     # returns JSON object as a dictionary
     f = open(
-        'backend/data.json') if not use_images else open('backend/data-images.json')
+        os.path.join(script_dir, 'data.json')
+) if not use_images else open(os.path.join(script_dir, 'data-images.json')
+)
     data = json.load(f)
     title_to_index = {song['title']: i for i, song in enumerate(data['songs'])}
 
     # lowercase title matching
-    # TODO: Jason implements edit distance for finding closest song title to user query
     song_titles = [song['title'].lower() for song in data["songs"]]
     lowercased_query_song_name = query_song_name.lower()
     if lowercased_query_song_name in song_titles:
@@ -103,7 +106,9 @@ def get_similar_songs(query_song_name, use_images):
 def autocorrect(query, use_images):
     # returns JSON object as a dictionary
     f = open(
-        'backend/data.json') if not use_images else open('backend/data-images.json')
+        os.path.join(script_dir, 'data.json')
+) if not use_images else open(os.path.join(script_dir, 'data-images.json')
+)
     data = json.load(f)
     f.close()
     songs = [k['title'].lower() for k in data['songs']]
