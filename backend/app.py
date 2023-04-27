@@ -47,23 +47,22 @@ def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
 
-def search(song, use_images):
-    similar_songs = similarity.get_similar_songs(song, use_images)
+def search(song):
+    similar_songs = similarity.get_similar_songs(song)
     return similar_songs
 
 
 @app.route("/songs")
 def songs_search():
     text = request.args.get("title")
-    images = request.args.get("images") == "true"
-    print(text, images)
-    response = search(text, use_images=images)
+    print(text)
+    response = search(text)
     if response == None:
-        autocorrected = similarity.autocorrect(text, images)
+        autocorrected = similarity.autocorrect(text)
         print(f'autocorrecting name from "{text}" to "{autocorrected}"')
-        resp = search(autocorrected, use_images=images)
+        resp = search(autocorrected)
         return jsonify({'data': resp, 'autocorrected': autocorrected})
     else: 
         return jsonify({'data': response, 'autocorrected': text})
 
-# app.run(debug=True)
+app.run(debug=True)

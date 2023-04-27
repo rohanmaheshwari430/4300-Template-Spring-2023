@@ -31,8 +31,8 @@ def get_cossim(i,j):
   if i >= 3500 and i <= 5250:
      return cossim_matrix_3[i - 3500][j]
 
-def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_images):
-  f = open('backend/data.json') if not use_images else open('backend/data-images.json')# returns JSON object as a dictionary
+def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
+  f = open('backend/data.json')
   data = json.load(f)
   f.close()
   scores = []
@@ -42,27 +42,18 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
           cossim_score = get_cossim(title_to_index[query_song_name], title_to_index[song['title']])
           score = (0.6 * jaccard_score) + (0.4 * cossim_score)
           scores.append((song["title"], song['artist'], score))
-          #   if not use_images:
-          #     scores.append((song["title"], score))
-          #   else:
-          #     scores.append((song["title"], score, song["artist"], song["genres"], song["image"]))
   scores.sort(key = lambda x: x[2],reverse=True)
   scores = scores[:10]
   final_list = []
   i = 0
-  if use_images:
-      for (title,score, artist, genres, image) in scores:
-        final_list.append(({'title': title ,'score': score, 'artist': artist, 'genres': genres, 'image': image}))
-        i += 1
-  else:
-    for (title, artist, score) in scores:
+  for (title, artist, score) in scores:
         score = round(score * 10, 1)
         final_list.append(({'title': title , 'artist': artist, 'score': str(score) + '/10'}))
         i += 1
   return final_list
 
-def get_similar_songs(query_song_name, use_images):
-  f = open('backend/data.json') if not use_images else open('backend/data-images.json')# returns JSON object as a dictionary
+def get_similar_songs(query_song_name):
+  f = open('backend/data.json')
   data = json.load(f)
   title_to_index = {song['title']: i for i, song in enumerate(data['songs'])}
   
@@ -73,10 +64,10 @@ def get_similar_songs(query_song_name, use_images):
   if lowercased_query_song_name in song_titles:
     song_index = song_titles.index(lowercased_query_song_name)
     query_song_lyrics = data['songs'][song_index]['lyrics']
-    return find_similar_songs(query_song_lyrics, data['songs'][song_index]['title'], title_to_index, use_images=None) # passing corrected title (case sensitive) 
+    return find_similar_songs(query_song_lyrics, data['songs'][song_index]['title'], title_to_index) # passing corrected title (case sensitive) 
 
-def autocorrect(query, use_images):
-  f = open('backend/data.json') if not use_images else open('backend/data-images.json')# returns JSON object as a dictionary
+def autocorrect(query):
+  f = open('backend/data.json')
   data = json.load(f)
   f.close()
   songs = [k['title'].lower() for k in data['songs']]
