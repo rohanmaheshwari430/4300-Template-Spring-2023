@@ -32,7 +32,7 @@ def get_cossim(i,j):
      return cossim_matrix_3[i - 3500][j]
 
 def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
-  f = open('backend/data.json')
+  f = open(os.path.join(script_dir, 'data.json'))
   data = json.load(f)
   f.close()
   scores = []
@@ -53,7 +53,8 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
   return final_list
 
 def get_similar_songs(query_song_name):
-  f = open('backend/data.json')
+  
+  f = open(os.path.join(script_dir, 'data.json'))
   data = json.load(f)
   title_to_index = {song['title']: i for i, song in enumerate(data['songs'])}
   
@@ -67,7 +68,7 @@ def get_similar_songs(query_song_name):
     return find_similar_songs(query_song_lyrics, data['songs'][song_index]['title'], title_to_index) # passing corrected title (case sensitive) 
 
 def autocorrect(query):
-  f = open('backend/data.json')
+  f = open(os.path.join(script_dir, 'data.json'))
   data = json.load(f)
   f.close()
   songs = [k['title'].lower() for k in data['songs']]
