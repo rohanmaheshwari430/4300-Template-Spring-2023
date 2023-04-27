@@ -122,7 +122,7 @@
             console.log(data)
             console.log(Object.keys(data).length)
             autocorrection = data['autocorrected']
-            //data = data['data']
+            data = data['data']
             let tempDiv = document.createElement("div");
             if (autocorrection != document.getElementById("filter-text-val").value) {
               tempDiv.innerHTML += autocorrectField(autocorrection, document.getElementById("filter-text-val").value)

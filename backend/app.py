@@ -13,7 +13,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "11111111"
+MYSQL_USER_PASSWORD = "1111"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "kardashiandb"
 
@@ -42,13 +42,15 @@ def sql_search(episode):
 def home():
     return render_template('base.html', title="sample html")
 
+
 @app.route("/episodes")
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
 
+
 def search(song):
-    similar_songs = similarity.get_similar_songs(song)
+    similar_songs = similarity.get_similar_songs(song, False)
     return similar_songs
 
 
@@ -62,7 +64,8 @@ def songs_search():
         print(f'autocorrecting name from "{text}" to "{autocorrected}"')
         resp = search(autocorrected)
         return jsonify({'data': resp, 'autocorrected': autocorrected})
-    else: 
+    else:
         return jsonify({'data': response, 'autocorrected': text})
+
 
 # app.run(debug=True)
