@@ -25,10 +25,6 @@
             <input placeholder='"One Dance"' id="filter-text-val" />
           </div>
         </div>
-        <div class="search-checkbox image-checkbox">
-          <label for="images">Alt. DB.</label>
-          <input type="checkbox" id="images" name="images">
-        </div>
       </div>
       <button class="submit-button" id="submit" onclick="filterText()">SEARCH</button>
     </div>
@@ -59,21 +55,21 @@
     </div>`;
       }
 
-      function answerBoxImagedTemplate({ title, genres, artist, image }) {
-        return ` <div
-        class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
-      >
-      <img class="rounded-lg w-full mb-4" src=${image} />
-        <h3
-          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-        >
-          ${title}
-        </h3>
-        <p class="font-normal text-gray-900 dark:text-white">${artist}</p>
-        <p class="font-normal text-gray-700 dark:text-gray-400"> genres: ${genres.join(", ")}</p>
-      </div>
-    </div>`;
-      }
+      //   function answerBoxImagedTemplate({ title, genres, artist, image }) {
+      //     return ` <div
+      //     class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
+      //   >
+      //   <img class="rounded-lg w-full mb-4" src=${image} />
+      //     <h3
+      //       class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+      //     >
+      //       ${title}
+      //     </h3>
+      //     <p class="font-normal text-gray-900 dark:text-white">${artist}</p>
+      //     <p class="font-normal text-gray-700 dark:text-gray-400"> genres: ${genres.join(", ")}</p>
+      //   </div>
+      // </div>`;
+      //   }
       function invalidSongTemplate() {
         return ` <div
         class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
@@ -115,12 +111,10 @@
       function filterText() {
         document.getElementById("answer-box").innerHTML = "";
         console.log(document.getElementById("filter-text-val").value);
-        const useImages = document.querySelector('#images').checked;
         fetch(
           "/songs?" +
           new URLSearchParams({
-            title: document.getElementById("filter-text-val").value,
-            images: useImages
+            title: document.getElementById("filter-text-val").value
           }).toString()
         )
           .then((response) => response.json())
@@ -140,15 +134,8 @@
             else {
               data.forEach((row) => {
                 console.log(row)
-                // tempDiv.innerHTML += 
-                if (!useImages) {
-                  tempDiv.innerHTML += answerBoxTemplate(row.title, row.artist, row.score, row.lyrics);
-                  document.getElementById("answer-box").appendChild(tempDiv);
-                }
-                else {
-                  tempDiv.innerHTML += answerBoxImagedTemplate(row);
-                  document.getElementById("answer-box").appendChild(tempDiv);
-                }
+                tempDiv.innerHTML += answerBoxTemplate(row.title, row.artist, row.score, row.lyrics);
+                document.getElementById("answer-box").appendChild(tempDiv);
               })
               const dropdowns = document.querySelectorAll(".answerbox");
 
