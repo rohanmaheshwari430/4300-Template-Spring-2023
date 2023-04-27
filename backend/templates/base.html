@@ -37,9 +37,9 @@
     </div>
 
     <script>
-      const answerBoxTemplate = (title, artist, score) => {
+      const answerBoxTemplate = (title, artist, score, lyrics) => {
         return ` <div
-        class=" max-w-xl mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
+        class="answerbox max-w-xl mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
       >
 
         <h3
@@ -53,8 +53,8 @@
           Artist: ${artist}
         </h3>
         <p class="font-normal text-gray-700 dark:text-gray-400"> Similarity rating: ${score}</p>
+        <p class="lyrics opacity-0 invisible absolute font-normal text-gray-700 dark:text-white"> ${lyrics}</p>
       </div>
-      <button class="inline-block cursor-pointer rounded-md bg-gray-800 px-4 py-3 text-center text-sm font-semibold uppercase text-white transition duration-200 ease-in-out hover:bg-gray-900">Button</button>
 
     </div>`;
       }
@@ -89,7 +89,7 @@
 
       function autocorrectField(auto, orig) {
         return ` <div
-        class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
+        class="block mx-auto p-6 rounded-lg max-w-4xl dark:bg-red-500 mb-10"
       >
         <h3
           class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
@@ -126,13 +126,13 @@
           .then((response) => response.json())
           .then((data) => {
             console.log(data)
+            console.log(Object.keys(data).length)
             autocorrection = data['autocorrected']
-            data = data['data']
+            //data = data['data']
             let tempDiv = document.createElement("div");
             if (autocorrection != document.getElementById("filter-text-val").value) {
               tempDiv.innerHTML += autocorrectField(autocorrection, document.getElementById("filter-text-val").value)
             }
-
             if (data.length == 0) {
               tempDiv.innerHTML += invalidSongTemplate();
               document.getElementById("answer-box").appendChild(tempDiv);
@@ -142,7 +142,7 @@
                 console.log(row)
                 // tempDiv.innerHTML += 
                 if (!useImages) {
-                  tempDiv.innerHTML += answerBoxTemplate(row.title, row.artist, row.score);
+                  tempDiv.innerHTML += answerBoxTemplate(row.title, row.artist, row.score, row.lyrics);
                   document.getElementById("answer-box").appendChild(tempDiv);
                 }
                 else {
@@ -150,6 +150,17 @@
                   document.getElementById("answer-box").appendChild(tempDiv);
                 }
               })
+              const dropdowns = document.querySelectorAll(".answerbox");
+
+              dropdowns.forEach(dropdown => {
+                dropdown.addEventListener("click", () => {
+                  dropdown.classList.toggle('max-w-3xl')
+                  dropdown.querySelector('.lyrics').classList.toggle('invisible');
+                  dropdown.querySelector('.lyrics').classList.toggle('opacity-0');
+                  dropdown.querySelector('.lyrics').classList.toggle('absolute');
+                  dropdown.querySelector('.lyrics').classList.toggle('fade');
+                });
+              });
             }
           }
           );

@@ -170,3 +170,14 @@ body {
 .search-icon {
     filter: invert() brightness(0.8);
 }
+.answerbox {
+  -webkit-transition: max-width 600ms;
+  transition: max-width 200ms ;
+  transition-delay: 100ms;
+}
+
+.fade {
+  -webkit-transition: opacity 600ms, visibility 600ms;
+  transition: opacity 600ms, visibility 600ms;
+  transition-delay: 200ms;
+}
