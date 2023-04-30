@@ -81,7 +81,7 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
             #   else:
             #     scores.append((song["title"], score, song["artist"], song["genres"], song["image"]))
     scores.sort(key=lambda x: x[2], reverse=True)
-    scores = scores[:10]
+    scores = scores[:10] 
     final_list = []
     i = 0
     if use_images:

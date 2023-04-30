@@ -36,7 +36,7 @@ def sql_search(episode):
     keys = ["id", "title", "descr"]
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys, i)) for i in data])
-
+ 
 
 @app.route("/")
 def home():
