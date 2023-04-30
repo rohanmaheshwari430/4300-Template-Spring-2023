@@ -13,4 +13,4 @@ def store():
     with open('emotions.json', 'w') as f:
       json.dump(scores, f, ensure_ascii=False)
     
-store()
+store() 
