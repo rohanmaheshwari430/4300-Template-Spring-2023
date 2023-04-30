@@ -42,26 +42,30 @@ def sql_search(episode):
 def home():
     return render_template('base.html', title="sample html")
 
+
 @app.route("/episodes")
 def episodes_search():
     text = request.args.get("title")
     return sql_search(text)
 
-def jaccard_search(episode, use_images):
-    listy= jaccard.get_song_lyrics(episode, use_images)
-    return listy
+
+def search(song):
+    similar_songs = similarity.get_similar_songs(song, False)
+    return similar_songs
 
 
 @app.route("/songs")
 def songs_search():
     text = request.args.get("title")
-    images = request.args.get("images") == "true"
-    print(text, images)
-    response = jaccard_search(text, use_images=images)
+    print(text)
+    response = search(text)
     if response == None:
-        print('invalid song')
-        return []
-    else: 
-        return response
+        autocorrected = similarity.autocorrect(text)
+        print(f'autocorrecting name from "{text}" to "{autocorrected}"')
+        resp = search(autocorrected)
+        return jsonify({'data': resp, 'autocorrected': autocorrected})
+    else:
+        return jsonify({'data': response, 'autocorrected': text})
+
 
 # app.run(debug=True)
