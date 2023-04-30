@@ -8,7 +8,6 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins:400,700,900" />
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway:400,700,900" />
 
-
 <body>
   <div class="full-body-container">
     <div class="top-text">
@@ -26,7 +25,7 @@
           </div>
         </div>
       </div>
-      <button class="submit-button" id="submit" onclick="filterText()">SEARCH</button>
+      <button class="submit-button" onclick="filterText()">SEARCH</button>
     </div>
     <div id="answer-box">
 
@@ -37,21 +36,14 @@
         return ` <div
         class="answerbox max-w-xl mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
       >
-
         <h3
           class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           ${title}
         </h3>
-        <h3
-          class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white"
-        >
-          Artist: ${artist}
-        </h3>
         <p class="font-normal text-gray-700 dark:text-gray-400"> Similarity rating: ${score}</p>
         <p class="lyrics opacity-0 invisible absolute font-normal text-gray-700 dark:text-white"> ${lyrics}</p>
       </div>
-
     </div>`;
       }
 
@@ -128,7 +120,8 @@
               tempDiv.innerHTML += autocorrectField(autocorrection, document.getElementById("filter-text-val").value)
             }
             if (data.length == 0) {
-              tempDiv.innerHTML += invalidSongTemplate();
+              let tempDiv = document.createElement("div");
+              tempDiv.innerHTML = invalidSongTemplate();
               document.getElementById("answer-box").appendChild(tempDiv);
             }
             else {

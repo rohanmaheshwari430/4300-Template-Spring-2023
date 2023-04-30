@@ -25,4 +25,4 @@ exploration/*.csv
 
 exploration/lastfm_key
 
-backend/firebase/serviceAccountKey.json
+.history/

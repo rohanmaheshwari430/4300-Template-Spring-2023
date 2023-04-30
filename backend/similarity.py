@@ -2,6 +2,8 @@ import json
 import numpy as np
 from typing import List
 import os
+import math 
+
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 file_path_1 = os.path.join(script_dir, 'cossim_matrix_1.npy')
@@ -36,11 +38,24 @@ def get_cossim(i, j):
         return cossim_matrix_3[i - 3500][j]
 
 
+def find_emotion_difference(arr1,arr2):
+   for i in range(0,5):
+      difference=difference+((arr1[i]-arr2[i])*(arr1[i]-arr2[i]))
+   return (1-math.sqrt(difference/5))
+   
+
 def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_images):
     # returns JSON object as a dictionary
     f = open(
-        'backend/data.json') if not use_images else open('backend/data-images.json')
-    l = open('backend/data_cosine.json')
+       os.path.join(script_dir, 'data.json')
+) if not use_images else open(os.path.join(script_dir, 'data-images.json')
+)
+    l = open(os.path.join(script_dir, 'data_cosine.json')
+)
+    emotionf = open('backend/emotions.json') # returns JSON object as a dictionary
+    emotionscores = json.load(emotionf)
+    emotionf.close()
+
     data = json.load(f)
     lyric_data = json.load(l)
     f.close()
@@ -53,18 +68,21 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
 
     for song in data["songs"]:
         if song["title"] != query_song_name:
-            jaccard_score = generalized_jaccard_similarity(
-                query_song_lyrics, song['lyrics'])
-            cossim_score = get_cossim(
-                title_to_index[query_song_name], title_to_index[song['title']])
-            score = (0.6 * jaccard_score) + (0.4 * cossim_score)
+            jaccard_score =  generalized_jaccard_similarity(query_song_lyrics, song['lyrics'])
+            cossim_score = get_cossim(title_to_index[query_song_name], title_to_index[song['title']])
+            score = 0
+            if query_song_name in emotionscores and song['title'] in emotionscores:
+                emotion_sim_score = find_emotion_difference(emotionscores[query_song_name], emotionscores[song['title']])
+                score = (0.6 * jaccard_score) + (0.3 * cossim_score) + (.1 * emotion_sim_score)
+            else:
+                score=(0.6 * jaccard_score) + (0.4 * cossim_score)
             scores.append((song["title"], song['artist'], score))
             #   if not use_images:
             #     scores.append((song["title"], score))
             #   else:
             #     scores.append((song["title"], score, song["artist"], song["genres"], song["image"]))
     scores.sort(key=lambda x: x[2], reverse=True)
-    scores = scores[:10]
+    scores = scores[:10] 
     final_list = []
     i = 0
     if use_images:
