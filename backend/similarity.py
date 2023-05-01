@@ -71,12 +71,14 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
             jaccard_score =  generalized_jaccard_similarity(query_song_lyrics, song['lyrics'])
             cossim_score = get_cossim(title_to_index[query_song_name], title_to_index[song['title']])
             score = 0
+            emotions="N/A"
             if query_song_name in emotion_scores and song['title'] in emotion_scores:
+                emotions="[Happy Rating: "+emotion_scores[query_song_name][0]+', Angry Rating: '+emotion_scores[query_song_name][1]+', Surprise Rating: ' +emotion_scores[query_song_name][2]+', Sad Rating: '+emotion_scores[query_song_name][3]+ ', Fear Rating: '+emotion_scores[query_song_name][4]+"]"
                 emotion_sim_score = find_emotion_difference(emotion_scores[query_song_name], emotion_scores[song['title']])
                 score = (0.6 * jaccard_score) + (0.3 * cossim_score) + (.1 * emotion_sim_score)
             else:
                 score=(0.6 * jaccard_score) + (0.4 * cossim_score)
-            scores.append((song["title"], song['artist'], score))
+            scores.append((song["title"], song['artist'], score,emotions))
             #   if not use_images:
             #     scores.append((song["title"], score))
             #   else:
@@ -91,11 +93,11 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
                               'artist': artist, 'genres': genres, 'image': image}))
             i += 1
     else:
-        for (title, artist, score) in scores:
+        for (title, artist, score, emotions) in scores:
             score = round(score * 10, 1)
             final_list.append(
                 ({'title': title, 'artist': artist, 'score': str(
-                    score) + '/10', 'lyrics': lyrics[title]}))
+                    score) + '/10', 'lyrics': lyrics[title],'emotions':emotions}))
             i += 1
     return final_list
 
