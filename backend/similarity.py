@@ -93,29 +93,16 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
     scores.sort(key=lambda x: x[2], reverse=True)
     scores = scores[:10] 
     final_list = []
-    i = 0
-    if use_images:
-        for (title, score, artist, genres, image) in scores:
-            top_terms = cosine_sim.top_terms([query_song_name, title])
-            final_list.append(({'title': title, 
-                                'score': score,
-                                'artist': artist, 
-                                'genres': genres, 
-                                'image': image, 
-                              }))
-            i += 1
-    else:
-        for (title, artist, score, popularity) in scores:
-            score = round(score * 10, 1)
-            top_terms = cosine_sim.top_terms([query_song_name, title])
-            final_list.append(
-                ({'title': title, 
-                  'artist': artist, 
-                  'score': str(score) + '/10', 
-                  'lyrics': lyrics[title], 
-                  'top_terms': top_terms, 
-                  'popularity': popularity}))
-            i += 1
+    for (title, artist, score, popularity) in scores:
+        score = round(score * 10, 1)
+        top_terms = cosine_sim.top_terms([query_song_name, title])
+        final_list.append(
+            ({'title': title, 
+              'artist': artist, 
+              'score': str(score) + '/10', 
+              'lyrics': lyrics[title], 
+              'top_terms': top_terms, 
+              'popularity': popularity}))
     return final_list
 
 
