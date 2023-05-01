@@ -7,7 +7,7 @@ def store():
     scores = {}
     b=0
     for song in data["songs"]:
-      scores[song['title']]=list(te.get_emotion(song['lyrics']).values())
+      print(list(te.get_emotion(song['lyrics']).keys()))
       b+=1
       print(b)
     with open('emotions.json', 'w') as f:
