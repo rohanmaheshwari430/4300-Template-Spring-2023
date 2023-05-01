@@ -19,7 +19,7 @@ def build_vectorizer(max_features, stop_words, max_df=0.8, min_df=100, norm='l2'
 def build_doc_by_vocab():
   tfidf_vec = build_vectorizer(n_feats, "english")
   doc_by_vocab = tfidf_vec.fit_transform([song['lyrics'] for song in data['songs']]).toarray()
-  return doc_by_vocab
+  return doc_by_vocab 
 
 def build_index_to_vocab():
   tfidf_vec = build_vectorizer(n_feats, "english")
