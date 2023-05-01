@@ -81,19 +81,19 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
             score = 0
             emotions="N/A"
             if query_song_name in emotion_scores and song['title'] in emotion_scores:
-                # emotions =" [Happy Rating: "+ emotion_scores[query_song_name][0] + ', Angry Rating: ' + emotion_scores[query_song_name][1] + ', Surprise Rating: ' + emotion_scores[query_song_name][2] +', Sad Rating: ' + emotion_scores[query_song_name][3] + ', Fear Rating: ' +emotion_scores[query_song_name][4]+"]"
+                emotions =" [Happy Rating: "+ str(emotion_scores[query_song_name][0]) + ', Angry Rating: ' + str(emotion_scores[query_song_name][1]) + ', Surprise Rating: ' + str(emotion_scores[query_song_name][2]) +', Sad Rating: ' + str(emotion_scores[query_song_name][3]) + ', Fear Rating: ' + str(emotion_scores[query_song_name][4])+"]"
                 emotion_sim_score = find_emotion_difference(emotion_scores[query_song_name], emotion_scores[song['title']])
                 popularity = song['popularity'] if song['popularity'] != None else 0
                 score = (0.3 * jaccard_score) + (0.4 * cossim_score) + (0.2 * (popularity / 100)) + (0.1 * emotion_sim_score)
             else:
                 popularity = song['popularity'] if song['popularity'] != None else 0
                 score=(0.4 * jaccard_score) + (0.4 * cossim_score) + (0.2 * (popularity / 100))
-            scores.append((song["title"], song['artist'], score, song['popularity']))
+            scores.append((song["title"], song['artist'], score, song['popularity'], emotions))
 
     scores.sort(key=lambda x: x[2], reverse=True)
     scores = scores[:10] 
     final_list = []
-    for (title, artist, score, popularity) in scores:
+    for (title, artist, score, popularity, emotions) in scores:
         score = round(score * 10, 1)
         top_terms = cosine_sim.top_terms([query_song_name, title])
         final_list.append(
@@ -102,7 +102,8 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
               'score': str(score) + '/10', 
               'lyrics': lyrics[title], 
               'top_terms': top_terms, 
-              'popularity': popularity}))
+              'popularity': popularity,
+              'emotions': emotions}))
     return final_list
 
 
