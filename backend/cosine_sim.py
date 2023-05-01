@@ -4,7 +4,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 from numpy import linalg as LA
 import json
-import math
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 f = open(os.path.join(script_dir, 'data_cosine.json'))
