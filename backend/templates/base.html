@@ -32,7 +32,7 @@
     </div>
 
     <script>
-      const answerBoxTemplate = (title, artist, score, lyrics) => {
+      const answerBoxTemplate = (title, artist, score, lyrics, top_terms, popularity) => {
         return ` <div
         class="answerbox max-w-xl mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
       >
@@ -41,11 +41,15 @@
         >
           ${title}
         </h3>
+        <p class="font-normal text-gray-700 dark:text-gray-400"> Artist: ${artist}</p>
         <p class="font-normal text-gray-700 dark:text-gray-400"> Similarity rating: ${score}</p>
+        <p class="font-normal text-gray-700 dark:text-gray-400"> Popularity : ${popularity}</p>
         <p class="lyrics opacity-0 invisible absolute font-normal text-gray-700 dark:text-white"> ${lyrics}</p>
+        <p class="font-normal text-gray-700 dark:text-gray-400"> Top terms: ${top_terms}</p>
       </div>
     </div>`;
       }
+      // 
 
       //   function answerBoxImagedTemplate({ title, genres, artist, image }) {
       //     return ` <div
@@ -127,7 +131,7 @@
             else {
               data.forEach((row) => {
                 console.log(row)
-                tempDiv.innerHTML += answerBoxTemplate(row.title, row.artist, row.score, row.lyrics);
+                tempDiv.innerHTML += answerBoxTemplate(row.title, row.artist, row.score, row.lyrics, row.top_terms, row.popularity);
                 document.getElementById("answer-box").appendChild(tempDiv);
               })
               const dropdowns = document.querySelectorAll(".answerbox");

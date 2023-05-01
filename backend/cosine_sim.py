@@ -1,19 +1,18 @@
 from __future__ import print_function
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 from numpy import linalg as LA
 import json
 import math
 
-f = open('backend/data_cosine.json')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+f = open(os.path.join(script_dir, 'data_cosine.json'))
 data = json.load(f) # returns JSON object as a dictionary
 
-n_feats = 5000
-doc_by_vocab = np.empty([len(data['songs']), n_feats])
+n_feats = 10000
 
-title_to_index = {song['title']: i for i, song in enumerate(data['songs'])}
-
-def build_vectorizer(max_features, stop_words, max_df=0.8, min_df=10, norm='l2'):
+def build_vectorizer(max_features, stop_words, max_df=0.8, min_df=100, norm='l2'):
     return TfidfVectorizer(max_features=max_features,stop_words=stop_words, 
                            max_df=max_df, min_df=min_df, norm=norm)
 
@@ -24,14 +23,18 @@ def build_doc_by_vocab():
 
 def build_index_to_vocab():
   tfidf_vec = build_vectorizer(n_feats, "english")
+  tfidf_vec.fit_transform([song['lyrics'] for song in data['songs']])
   index_to_vocab = {i:v for i, v in enumerate(tfidf_vec.get_feature_names())}
   return index_to_vocab
-   
 
+doc_by_vocab = np.empty([len(data['songs']), n_feats])
+title_to_index = {song['title']: i for i, song in enumerate(data['songs'])}
+doc_mat = build_doc_by_vocab()
+index_to_vocab = build_index_to_vocab()
+   
 def get_sim(song1, song2, input_doc_mat):
     s1_idx = title_to_index[song1]
     s2_idx = title_to_index[song2]
-    
     s1_vector = input_doc_mat[s1_idx]
     s2_vector = input_doc_mat[s2_idx]
     
@@ -45,15 +48,14 @@ def get_sim(song1, song2, input_doc_mat):
     except:
        return 0
 
-def top_terms(songs, input_doc_mat, index_to_vocab, title_to_index, top_k=10):
+def top_terms(songs, top_k=5):
+    print(songs)
     song_indices = [title_to_index[song] for song in songs]
-    prod_vec = np.prod(input_doc_mat[song_indices], axis=0)
-    
+    prod_vec = np.prod(doc_mat[song_indices], axis=0)
     top_k_words_idx = prod_vec.argsort()[-top_k:][::-1]
     top_k_words = []
     for idx in top_k_words_idx:
         top_k_words.append(index_to_vocab[idx])
-    
     return top_k_words
    
 

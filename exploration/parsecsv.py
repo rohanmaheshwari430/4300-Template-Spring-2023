@@ -1,7 +1,14 @@
 import csv
 from typing import List
 import json
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+import langdetect
 
+# Download stop words data
+nltk.download('stopwords')
+nltk.download('punkt')
 
 # Define a class to represent each song
 class Song:
@@ -15,17 +22,17 @@ class Song:
         self.year = year
         self.length = length
 
-
-
     # Method to process lyrics
     def _process_lyrics(self, lyrics: str) -> List[str]:
         # Convert lyrics to lowercase and tokenize
-        tokens = lyrics.lower().replace("(","").replace(")","").split()
+        lyrics_tokens = word_tokenize(lyrics.lower().replace("(","").replace(")",""))
+        # Remove stopwords
+        lyrics_tokens = [word for word in lyrics_tokens if not word in stopwords.words('english')]
         # Remove duplicate words
-        unique_tokens = set(tokens)
+        unique_tokens = set(lyrics_tokens)
         token_dict =  dict()
         for item in unique_tokens:
-            token_dict[item]= tokens.count(item)
+            token_dict[item]= lyrics_tokens.count(item)
         return token_dict
 
 # Define the path to the CSV file
@@ -58,8 +65,11 @@ with open(csv_file_path, 'r', newline='', encoding='utf-8') as csv_file:
             "length:": song.length
         }
         if ("remix" not in song.title.lower()) and ("dub" not in song.title.lower()) and ("(" not in song.title.lower()) and (")" not in song.title.lower()):
-          songs.append(person_json)
-          print(person_json)
+          if("tour" not in song.title.lower() and "*" not in song.title.lower() and "[" not in song.title.lower() and "]" not in song.title.lower()):
+            if("tour" not in song.title.lower() and "live" not in song.title.lower()):
+                songs.append(person_json)
+                print(person_json)
+             
     data["songs"] = songs
     with open("backend/data.json", "w") as f:
         json.dump(data, f)

@@ -60,7 +60,7 @@ def songs_search():
     print(text)
     response = search(text)
     if response == None:
-        autocorrected = similarity.autocorrect(text)
+        autocorrected = similarity.autocorrect(text, None)
         print(f'autocorrecting name from "{text}" to "{autocorrected}"')
         resp = search(autocorrected)
         return jsonify({'data': resp, 'autocorrected': autocorrected})
@@ -68,4 +68,4 @@ def songs_search():
         return jsonify({'data': response, 'autocorrected': text})
 
 
-# app.run(debug=True)
+app.run(debug=True)

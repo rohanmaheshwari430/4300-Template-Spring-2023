@@ -44,9 +44,11 @@ with open(csv_file_path, 'r', newline='', encoding='utf-8') as csv_file:
             "album": song.album,
             "length:": song.length
         }
-        if ("remix" not in song.title.lower()) and ("dub" not in song.title.lower()):
-          songs.append(person_json)
-          print(person_json)
+        if ("remix" not in song.title.lower()) and ("dub" not in song.title.lower()) and ("(" not in song.title.lower()) and (")" not in song.title.lower()):
+          if("tour" not in song.title.lower() and "*" not in song.title.lower() and "[" not in song.title.lower() and "]" not in song.title.lower()):
+            if("tour" not in song.title.lower() and "live" not in song.title.lower()):
+              songs.append(person_json)
+              print(person_json['artist'])
     data["songs"] = songs
     with open("backend/data_cosine.json", "w") as f:
         json.dump(data, f)
