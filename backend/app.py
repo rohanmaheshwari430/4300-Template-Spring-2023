@@ -50,7 +50,7 @@ def episodes_search():
 
 
 def search(song):
-    similar_songs = similarity.get_similar_songs(song, False)
+    similar_songs = similarity.get_similar_songs(song)
     return similar_songs
 
 
