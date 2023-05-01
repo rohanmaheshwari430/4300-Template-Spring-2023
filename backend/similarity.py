@@ -59,7 +59,16 @@ def find_emotion_difference(arr1, arr2):
       difference = difference + ((arr1[i] - arr2[i]) * (arr1[i] - arr2[i]))
    return (1 - math.sqrt(difference / 5))
    
-def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_images):
+
+def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
+    # returns JSON object as a dictionary
+    data_json = open(os.path.join(script_dir, 'data.json'))
+    data_cosine_json = open(os.path.join(script_dir, 'data_cosine.json'))
+    
+    data = json.load(data_json)
+    lyric_data = json.load(data_cosine_json)
+    data_json.close()
+    data_cosine_json.close()
     scores = []
     lyrics = {}
     for song in lyric_data["songs"]:
@@ -110,10 +119,10 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index, use_i
     return final_list
 
 
-def get_similar_songs(query_song_name, use_images):
+def get_similar_songs(query_song_name):
     # returns JSON object as a dictionary
     f = open(
-        data_json_path) if not use_images else open(data_images_path)
+        data_json_path) 
     data = json.load(f)
     title_to_index = {song['title']: i for i, song in enumerate(data['songs'])}
 
@@ -124,13 +133,13 @@ def get_similar_songs(query_song_name, use_images):
         song_index = song_titles.index(lowercased_query_song_name)
         query_song_lyrics = data['songs'][song_index]['lyrics']
         # passing corrected title (case sensitive)
-        return find_similar_songs(query_song_lyrics, data['songs'][song_index]['title'], title_to_index, use_images=None)
+        return find_similar_songs(query_song_lyrics, data['songs'][song_index]['title'], title_to_index)
 
 
-def autocorrect(query, use_images):
+def autocorrect(query):
     # returns JSON object as a dictionary
     f = open(
-        data_json_path) if not use_images else open(data_images_path)
+        data_json_path)
     data = json.load(f)
     f.close()
     songs = [k['title'].lower() for k in data['songs']]
