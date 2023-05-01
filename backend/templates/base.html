@@ -33,6 +33,16 @@
 
     <script>
       const answerBoxTemplate = (title, artist, score, lyrics, emotions, top_terms, popularity) => {
+        const terms = top_terms.join(', ')
+        const lyrics_bolded = [];
+        lyrics.split(" ").forEach(word => {
+          if (top_terms.includes(word)){
+            lyrics_bolded.push('<b class="text-gray-300">' + word + '</b>')
+          }
+          else{
+            lyrics_bolded.push(word)
+          }
+        });
         return ` <div
         class="answerbox max-w-xl mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
       >
@@ -41,12 +51,25 @@
         >
           ${title}
         </h3>
-        <p class="font-normal text-gray-700 dark:text-gray-400"> Artist: ${artist}</p>
-        <p class="font-normal text-gray-700 dark:text-gray-400"> Similarity rating: ${score}</p>
-        <p class="font-normal text-gray-700 dark:text-gray-400"> Popularity : ${popularity}</p>
-        <p class="font-normal text-gray-700 dark:text-gray-400"> Emotions: ${emotions}</p>
-        <p class="lyrics opacity-0 invisible absolute font-normal text-gray-700 dark:text-white"> ${lyrics}</p>
-        <p class="font-normal text-gray-700 dark:text-gray-400"> Top terms: ${top_terms}</p>
+        <p class="font-normal text-gray-700 dark:text-gray-300"> Artist: ${artist}</p>
+        <p class="font-normal text-gray-700 dark:text-gray-300"> Similarity rating: ${score}</p>
+        <p class="font-normal text-gray-700 dark:text-gray-300"> Popularity : ${popularity}</p>
+        <div class="gap-0.5 border px-1 rounded mt-0.5">
+          <div class="text-xs dark:text-gray-300 mt-0.5">Emotional Score</div>
+          <div class="grid grid-rows-3 grid-flow-col mb-0.5">
+            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[0][0]+' : '+ emotions[0][1]}</p>
+            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[1][0]+' : '+ emotions[1][1]}</p>
+            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[2][0]+' : '+ emotions[2][1]}</p>
+            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[3][0]+' : '+ emotions[3][1]}</p>
+            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[4][0]+' : '+ emotions[4][1]}</p>
+          </div>
+        </div>
+        <p class="font-normal text-gray-700 dark:text-gray-300"> Top terms: <b>${terms}</b></p>
+        <div class="lyrics opacity-0 invisible absolute font-normal "> 
+          <p class="text-gray-700 dark:text-gray-300">Lyrics: </p>
+          <p class="text-gray-700 dark:text-gray-400"> ${lyrics_bolded.join(' ')}</p>
+        </div>
+        
       </div>
     </div>`;
       }
