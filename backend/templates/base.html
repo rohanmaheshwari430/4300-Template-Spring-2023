@@ -44,30 +44,30 @@
           }
         });
         return ` <div
-        class="answerbox max-w-xl mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
+        class="answerbox max-w-xl mx-auto block p-6 border border-gray-200 rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-700 mb-10"
       >
         <h3
-          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="mb-2 text-2xl font-bold tracking-tight text-white"
         >
           ${title}
         </h3>
-        <p class="font-normal text-gray-700 dark:text-gray-300"> Artist: ${artist}</p>
-        <p class="font-normal text-gray-700 dark:text-gray-300"> Similarity rating: ${score}</p>
-        <p class="font-normal text-gray-700 dark:text-gray-300"> Popularity : ${popularity}</p>
+        <p class="font-normal text-gray-300"> Artist: ${artist}</p>
+        <p class="font-normal text-gray-300"> Similarity rating: ${score}</p>
+        <p class="font-normal text-gray-300"> Popularity : ${popularity}</p>
         <div class="gap-0.5 border px-1 rounded mt-0.5">
-          <div class="text-xs dark:text-gray-300 mt-0.5">Emotional Score</div>
+          <div class="text-xs text-gray-300 mt-0.5">Emotional Score</div>
           <div class="grid grid-rows-3 grid-flow-col mb-0.5">
-            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[0][0]+' : '+ emotions[0][1]}</p>
-            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[1][0]+' : '+ emotions[1][1]}</p>
-            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[2][0]+' : '+ emotions[2][1]}</p>
-            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[3][0]+' : '+ emotions[3][1]}</p>
-            <p class="font-normal text-gray-700 dark:text-gray-300"> ${emotions[4][0]+' : '+ emotions[4][1]}</p>
+            <p class="font-normal text-gray-300"> ${emotions[0][0]+' : '+ emotions[0][1]}</p>
+            <p class="font-normal text-gray-300"> ${emotions[1][0]+' : '+ emotions[1][1]}</p>
+            <p class="font-normal text-gray-300"> ${emotions[2][0]+' : '+ emotions[2][1]}</p>
+            <p class="font-normal text-gray-300"> ${emotions[3][0]+' : '+ emotions[3][1]}</p>
+            <p class="font-normal text-gray-300"> ${emotions[4][0]+' : '+ emotions[4][1]}</p>
           </div>
         </div>
-        <p class="font-normal text-gray-700 dark:text-gray-300"> Top terms: <b>${terms}</b></p>
+        <p class="font-normal text-gray-300"> Top terms: <b>${terms}</b></p>
         <div class="lyrics opacity-0 invisible absolute font-normal "> 
-          <p class="text-gray-700 dark:text-gray-300">Lyrics: </p>
-          <p class="text-gray-700 dark:text-gray-400"> ${lyrics_bolded.join(' ')}</p>
+          <p class="text-gray-300">Lyrics: </p>
+          <p class="text-gray-400"> ${lyrics_bolded.join(' ')}</p>
         </div>
         
       </div>
@@ -92,10 +92,10 @@
       //   }
       function invalidSongTemplate() {
         return ` <div
-        class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-10"
+        class="block p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-700 mb-10"
       >
         <h3
-          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="mb-2 text-2xl font-bold tracking-tight text-white"
         >
           Song not available in database. Please try again!
         </h3>
@@ -105,10 +105,10 @@
 
       function autocorrectField(auto, orig) {
         return ` <div
-        class="block mx-auto p-6 rounded-lg max-w-4xl dark:bg-red-500 mb-10"
+        class="block mx-auto p-6 rounded-lg max-w-4xl bg-red-500 mb-10"
       >
         <h3
-          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="mb-2 text-2xl font-bold tracking-tight text-white"
         >
           Showing results for ${auto} instead of ${orig} (No Matches) 
         </h3>
