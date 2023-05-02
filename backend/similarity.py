@@ -35,13 +35,16 @@ def generalized_jaccard_similarity(s1, s2):
     s1_tokens = sum([s1[w] for w in s1.keys()])
     s2_tokens = sum([s2[w] for w in s2.keys()])
     good_types = set(s1.keys()).intersection(set(s2.keys()))
-    if (len(good_types) == 0):
+    if (len(good_types) == 0 or s1_tokens == 0 or s2_tokens == 0):
         return 0
     numerator = sum([min(s1[w] / s1_tokens, s2[w] / s2_tokens)
                     for w in good_types])
     denominator = sum([max(s1[w] / s1_tokens, s2[w] / s2_tokens)
                       for w in good_types])
-    return numerator / denominator
+    try:
+        return numerator / denominator
+    except ZeroDivisionError:
+        return 0
 
 
 def get_cossim(i, j):

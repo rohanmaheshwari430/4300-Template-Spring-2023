@@ -29,7 +29,7 @@ def remove_no_lyric_songs():
         data = json.load(f)
     songs = data['songs']
     for song in songs:
-        if song['lyrics'] == lyrics:
+        if song['lyrics'].setdefault('please', 0) == 1 and song['lyrics'].setdefault('back', 0) == 1 and song['lyrics'].setdefault('lyrics', 0) == 1 and song['lyrics'].setdefault('released', 0) == 2 and song['lyrics'].setdefault('yet', 0) == 1 and song['lyrics'].setdefault('check', 0) == 1 and song['lyrics'].setdefault('song', 0) == 2:
             print(song['title'])
             songs.remove(song)
     data['songs'] = songs
