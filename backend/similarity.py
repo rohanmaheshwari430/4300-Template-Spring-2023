@@ -62,6 +62,8 @@ def find_emotion_difference(arr1, arr2):
       difference = difference + ((arr1[i] - arr2[i]) * (arr1[i] - arr2[i]))
    return (1 - math.sqrt(difference / 5))
    
+def percentify(rating):
+    return str(rating*100)+"%"
 
 def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
     # returns JSON object as a dictionary
@@ -82,14 +84,20 @@ def find_similar_songs(query_song_lyrics, query_song_name, title_to_index):
             jaccard_score =  generalized_jaccard_similarity(query_song_lyrics, song['lyrics'])
             cossim_score = get_cossim(title_to_index[query_song_name], title_to_index[song['title']])
             score = 0
-            emotions="N/A"
+            emotions = [('Happy Rating', "N/A"), 
+                        ('Angry Rating', "N/A"), 
+                        ('Surprise Rating', "N/A"), 
+                        ('Sad Rating', "N/A"), 
+                        ('Fear Rating', "N/A"), 
+                        ('Overall Emotion Difference to Query Song', "N/A"), ]
             if query_song_name in emotion_scores and song['title'] in emotion_scores:
-                emotions = [('Happy Rating', emotion_scores[song['title']][0]), 
-                            ('Angry Rating', emotion_scores[song['title']][1]), 
-                            ('Surprise Rating', emotion_scores[song['title']][2]), 
-                            ('Sad Rating', emotion_scores[song['title']][3]), 
-                            ('Fear Rating', emotion_scores[song['title']][4])]
                 emotion_sim_score = find_emotion_difference(emotion_scores[query_song_name], emotion_scores[song['title']])
+                emotions = [('Happy Rating', percentify(emotion_scores[song['title']][0])), 
+                            ('Angry Rating', percentify(emotion_scores[song['title']][1])), 
+                            ('Surprise Rating', percentify(emotion_scores[song['title']][2])), 
+                            ('Sad Rating', percentify(emotion_scores[song['title']][3])), 
+                            ('Fear Rating', percentify(emotion_scores[song['title']][4])),
+                            ('Overall Emotion Difference to Query song',percentify((1-emotion_sim_score)))]
                 popularity = song['popularity'] if song['popularity'] != None else 0
                 score = (0.3 * jaccard_score) + (0.4 * cossim_score) + (0.2 * (popularity / 100)) + (0.1 * emotion_sim_score)
             else:
